@@ -254,6 +254,124 @@ p {
   letter-spacing: 1.4px;
 }
 
+/* ENVELOPE */
+
+.envelope-screen {
+  overflow: hidden;
+}
+
+.envelope-screen .eyebrow {
+  margin-bottom: 12px;
+}
+
+.envelope {
+  position: relative;
+  width: min(100%, 280px);
+  height: 180px;
+  margin: 35px auto 25px;
+  cursor: pointer;
+  perspective: 900px;
+  filter: drop-shadow(0 15px 25px #0005);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg,#8c405b,#4c1b32);
+  border: 1px solid #e7bd9b80;
+  border-radius: 8px;
+}
+
+.envelope-letter {
+  position: absolute;
+  left: 10%;
+  width: 80%;
+  height: 85%;
+  bottom: 5%;
+  background: linear-gradient(145deg,#fff1f5,#f8dce6);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8b3c59;
+  font-size: 30px;
+  transition: transform .8s ease;
+  z-index: 2;
+}
+
+.envelope-front {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg,#b45e7b,#71304c);
+  clip-path: polygon(0 0,50% 58%,100% 0,100% 100%,0 100%);
+  border-radius: 8px;
+  z-index: 3;
+}
+
+.envelope-flap {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg,#d38aa2,#9a4b68);
+  clip-path: polygon(0 0,100% 0,50% 65%);
+  transform-origin: top center;
+  transition: transform .8s ease;
+  z-index: 4;
+}
+
+.envelope-seal {
+  position: absolute;
+  top: 54%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(145deg,#ffe0eb,#d88ca7);
+  color: #71304c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 3px 12px #0003;
+  z-index: 5;
+  transition: opacity .3s ease;
+}
+
+.envelope.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.envelope.open .envelope-letter {
+  transform: translateY(-75px);
+}
+
+.envelope.open .envelope-seal {
+  opacity: 0;
+}
+
+.envelope-hint {
+  color: var(--pink);
+  font: 10px Arial,sans-serif;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  animation: hintPulse 1.8s infinite;
+}
+
+@keyframes hintPulse {
+  50% { opacity: .55; }
+}
+
+#finalMessage {
+  display: none;
+  animation: show .8s ease;
+}
+
+#finalMessage.visible {
+  display: block;
+}
+
 @media(max-width:380px) {
   main { width: calc(100% - 16px); }
   .page { padding: 25px 16px; }
@@ -263,6 +381,7 @@ p {
 </head>
 
 <body>
+
 <div id="floating"></div>
 
 <main>
@@ -413,35 +532,106 @@ p {
   <div class="foot">A little kindness means a lot ♡</div>
 </section>
 
-<section class="page" id="final">
+<!-- FINAL PAGE: ENVELOPE -->
+
+<section class="page envelope-screen" id="final">
+
   <div class="eyebrow">A little message · Just for you</div>
+  <div class="heart">♡</div>
 
-  <img
-    src="./couple.png"
-    alt="Boy and girl touching foreheads with a glowing heart"
-    class="final-art"
-  >
+  <h2 id="envelopeTitle">One Last Little Secret 💌</h2>
 
-  <p style="font-size:9px;letter-spacing:1.7px;color:var(--gold);text-transform:uppercase">
-    No pressure · Just honest feelings
+  <p id="envelopeText">
+    There's something waiting<br>
+    inside this little envelope.
   </p>
 
-  <div class="divider"></div>
-  <span class="pulse">♡</span>
-  <h1 class="final-title">I LOVE YOU <span style="color:#ff8eb2">❤️</span></h1>
-  <p>Whatever your answer, thank you for reading<br>this little message.</p>
-  <p style="margin-top:12px;color:var(--pink)">You deserve happiness. 💗</p>
-  <div class="divider"></div>
-  <button class="primary" onclick="restart()">Read Again ♡</button>
-  <div class="foot">A little courage, from the heart ♡</div>
+  <div class="envelope" id="envelope" onclick="openEnvelope()">
+
+    <div class="envelope-back"></div>
+
+    <div class="envelope-letter">
+      <span>♡</span>
+    </div>
+
+    <div class="envelope-front"></div>
+
+    <div class="envelope-flap"></div>
+
+    <div class="envelope-seal">♥</div>
+
+  </div>
+
+  <p class="envelope-hint" id="envelopeHint">
+    Tap to open your little surprise
+  </p>
+
+  <!-- FINAL MESSAGE -->
+
+  <div id="finalMessage">
+
+    <img
+      src="./couple.png"
+      alt="Boy and girl touching foreheads with a glowing heart"
+      class="final-art"
+    >
+
+    <p style="font-size:9px;letter-spacing:1.7px;color:var(--gold);text-transform:uppercase">
+      No pressure · Just honest feelings
+    </p>
+
+    <div class="divider"></div>
+
+    <span class="pulse">♡</span>
+
+    <h1 class="final-title">
+      I LOVE YOU <span style="color:#ff8eb2">❤️</span>
+    </h1>
+
+    <p>
+      Whatever your answer, thank you for reading<br>
+      this little message.
+    </p>
+
+    <p style="margin-top:12px;color:var(--pink)">
+      You deserve happiness. 💗
+    </p>
+
+    <div class="divider"></div>
+
+    <button class="primary" onclick="restart()">
+      Read Again ♡
+    </button>
+
+    <div class="foot">
+      A little courage, from the heart ♡
+    </div>
+
+  </div>
+
 </section>
+
 </main>
 
+<!-- AUDIO FILE -->
+
+<audio id="loveSong" preload="auto">
+  <source src="./song.mp3" type="audio/mpeg">
+</audio>
+
 <script>
+
 const questions = ["q1","q2","q3","q4","q5","q6","q7","q8"];
+
 let current = 0;
+let envelopeOpened = false;
+
+const loveSong = document.getElementById("loveSong");
+
+// PAGE NAVIGATION
 
 function showPage(id) {
+
   document.querySelectorAll(".page").forEach(page => {
     page.classList.remove("active");
   });
@@ -450,44 +640,169 @@ function showPage(id) {
 
   if (page) {
     page.classList.add("active");
-    window.scrollTo({top: 0, behavior: "smooth"});
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   }
+
+  if (id !== "final") {
+    stopLoveSong();
+  }
+
+  if (id === "final") {
+    resetEnvelope();
+  }
+
 }
+
+// START QUESTIONS
 
 function startQuestions() {
   current = 0;
   showPage(questions[current]);
 }
 
+// ANSWER QUESTIONS
+
 function answer(n) {
+
   if (n < 8) {
     current = n;
     showPage(questions[current]);
   } else {
     showPage("confession");
   }
+
 }
+
+// OPEN ENVELOPE
+
+function openEnvelope() {
+
+  if (envelopeOpened) return;
+
+  envelopeOpened = true;
+
+  const envelope = document.getElementById("envelope");
+
+  envelope.classList.add("open");
+
+  document.getElementById("envelopeTitle").textContent =
+    "A Message From My Heart ♡";
+
+  document.getElementById("envelopeText").textContent =
+    "This little message is just for you.";
+
+  document.getElementById("envelopeHint").style.display = "none";
+
+  // Start song at 15 seconds
+  playLoveSong();
+
+  // Reveal the final message after animation
+  setTimeout(() => {
+
+    document.getElementById("finalMessage").classList.add("visible");
+
+  }, 900);
+
+}
+
+// PLAY SONG
+
+function playLoveSong() {
+
+  if (!loveSong) return;
+
+  loveSong.pause();
+
+  loveSong.currentTime = 15;
+
+  loveSong.play().catch(() => {
+
+    console.log("Song could not play. Check song.mp3");
+
+  });
+
+}
+
+// STOP SONG
+
+function stopLoveSong() {
+
+  if (!loveSong) return;
+
+  loveSong.pause();
+
+  loveSong.currentTime = 0;
+
+}
+
+// RESET ENVELOPE
+
+function resetEnvelope() {
+
+  envelopeOpened = false;
+
+  document.getElementById("envelope").classList.remove("open");
+
+  document.getElementById("finalMessage").classList.remove("visible");
+
+  document.getElementById("envelopeTitle").textContent =
+    "One Last Little Secret 💌";
+
+  document.getElementById("envelopeText").innerHTML =
+    "There's something waiting<br>inside this little envelope.";
+
+  document.getElementById("envelopeHint").style.display = "block";
+
+  stopLoveSong();
+
+}
+
+// RESTART WEBSITE
 
 function restart() {
+
   current = 0;
+
   showPage("welcome");
+
 }
 
+// FLOATING HEARTS
+
 const container = document.getElementById("floating");
+
 const symbols = ["♡","♥","💕","💗"];
 
 function addHeart() {
+
   const h = document.createElement("span");
+
   h.className = "float";
-  h.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+
+  h.textContent =
+    symbols[Math.floor(Math.random() * symbols.length)];
+
   h.style.left = Math.random() * 100 + "vw";
-  h.style.fontSize = (12 + Math.random() * 16) + "px";
-  h.style.animationDuration = (7 + Math.random() * 7) + "s";
+
+  h.style.fontSize =
+    (12 + Math.random() * 16) + "px";
+
+  h.style.animationDuration =
+    (7 + Math.random() * 7) + "s";
+
   container.appendChild(h);
+
   setTimeout(() => h.remove(), 15000);
+
 }
 
-setInterval(addHeart, 850);
+setInterval(addHeart, 800);
+
 </script>
+
 </body>
 </html>
